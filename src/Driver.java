@@ -103,7 +103,7 @@ public class Driver {
 		cell.setCellStyle(style);
 
 		cell = row.createCell(STAR_ID);
-		cell.setCellValue("fe4194fm");
+		cell.setCellValue("ab9076bc");
 		cell.setCellStyle(style);
 		
 		cell = row.createCell(STUDENT_ID);
@@ -111,11 +111,11 @@ public class Driver {
 		cell.setCellStyle(style);
 		
 		cell = row.createCell(PHONE);
-		cell.setCellValue("612 298 6700");
+		cell.setCellValue("999 999 9999");
 		cell.setCellStyle(style);
 		
 		cell = row.createCell(EMAIL);
-		cell.setCellValue("joatansampaio@live.com");
+		cell.setCellValue("dummy@dummy.com");
 		cell.setCellStyle(style);
 
 		File currDir = new File(".");
