@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Joatan
+ * @author Joatan Sampaio
+ * @date 12/01/2022
  *
  */
 public class Student {
