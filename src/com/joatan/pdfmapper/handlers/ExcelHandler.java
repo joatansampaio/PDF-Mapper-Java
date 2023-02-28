@@ -166,6 +166,7 @@ public class ExcelHandler {
 
 		write();
 
+		pdf.pdf.close();
 	}
 
 	public void write() {

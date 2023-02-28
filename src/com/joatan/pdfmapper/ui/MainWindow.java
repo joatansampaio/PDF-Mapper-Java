@@ -1,17 +1,10 @@
 package com.joatan.pdfmapper.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTree;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWindow {
 
@@ -27,39 +20,11 @@ public class MainWindow {
 		frame.setForeground(Color.black);
 		frame.setBackground(Color.lightGray);
 
-		fileTree = new FileTree(new File("."));
-		fileTree.setPreferredSize(new Dimension(400, 400));
+		panel = new PDFMapperPanel();
+		
+		frame.add(panel); 
 
-		panel = new JPanel();
-
-		panel.setSize(400, 400);
-		panel.add(fileTree);
-
-		browseBtn = new JButton("Browse");
-
-		browseBtn.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				Dialog dialog = new Dialog();
-				dialog.open();
-			}
-		});
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-
-		panel.add(browseBtn);
-		frame.add(panel);
-
-		frame.setLocationRelativeTo(null); // Center
+		frame.setLocationRelativeTo(null); // Centralizing frame to the screen
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
