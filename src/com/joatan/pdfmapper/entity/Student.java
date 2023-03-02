@@ -78,10 +78,10 @@ public class Student {
 		}
 		return educationLevel;
 	}
-	
+
 	private String getHighSchoolName(HashMap<String, String> map) {
 		String highschoolName = "";
-		
+
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			if (entry.getKey().contains("check") && entry.getValue().equals("Yes")) {
 				highschoolName = entry.getKey().split("\\$")[1];
@@ -89,16 +89,16 @@ public class Student {
 		}
 		return highschoolName;
 	}
-	
+
 	private String getGPA(HashMap<String, String> map) {
 		String gpa = "";
-		
-		for(Map.Entry<String, String> entry : map.entrySet()) {
-			if(entry.getKey().contains("gpa") && entry.getValue().equals("Yes")) {
+
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			if (entry.getKey().contains("gpa") && entry.getValue().equals("Yes")) {
 				gpa = entry.getKey().split("\\$")[1];
 			}
 		}
-		
+
 		return gpa;
 	}
 
@@ -106,12 +106,12 @@ public class Student {
 	public String toString() {
 		return "Student \nname=" + name + "\nstarID=" + starID + "\nstudentID=" + studentID + "\nphone=" + phone
 				+ "\nemail=" + email + "\ncountry=" + country + "\narrival=" + arrival + "\neducation=" + education
-				+ "\neducationLevel=" + educationLevel + "\nschoolUS=" + schoolUS + "\nschoolUSYears=" + primarySecondarySchoolYears
-				+ "\nhighschoolGraduation=" + highschoolGraduation + "\nhighschoolGraduationYear="
-				+ highschoolGraduationYear + "\nGED=" + GED + "\nGEDYear=" + GEDYear + "\nhighschoolName="
-				+ highschoolName + "\nGPA=" + GPA;
+				+ "\neducationLevel=" + educationLevel + "\nschoolUS=" + schoolUS + "\nschoolUSYears="
+				+ primarySecondarySchoolYears + "\nhighschoolGraduation=" + highschoolGraduation
+				+ "\nhighschoolGraduationYear=" + highschoolGraduationYear + "\nGED=" + GED + "\nGEDYear=" + GEDYear
+				+ "\nhighschoolName=" + highschoolName + "\nGPA=" + GPA;
 	}
-	
+
 	public Student() {
 		super();
 		maxLen = 0;

@@ -5,18 +5,18 @@ import javax.swing.JFrame;
 
 public class MainWindow {
 
-	public static PDFMapperPanel mainPanel = new PDFMapperPanel();
-	
+	public static MainPanel mainPanel = new MainPanel();
+
 	public void openWindow(String[] av) {
-		
+
 		JFrame mainWindowFrame;
 
 		mainWindowFrame = new JFrame("PDF Mapper");
 		mainWindowFrame.setSize(800, 800);
 		mainWindowFrame.setForeground(Color.black);
 		mainWindowFrame.setBackground(Color.lightGray);
-		
-		mainWindowFrame.add(mainPanel); 
+
+		mainWindowFrame.add(mainPanel);
 
 		mainWindowFrame.setLocationRelativeTo(null); // Centralizing frame to the screen
 		mainWindowFrame.pack();
