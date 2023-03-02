@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JTree;
@@ -13,8 +15,11 @@ import javax.swing.tree.DefaultTreeModel;
 @SuppressWarnings("serial")
 public class DestinationPDFFileTree extends JTree {
 
+	ArrayList<File> treePDFFiles;
+
 	public DestinationPDFFileTree() {
-		this.setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
+		this.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Selected PDFs")));
+
 		this.setPreferredSize(new Dimension(300, 700));
 		this.setBackground(Color.WHITE);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -49,6 +54,14 @@ public class DestinationPDFFileTree extends JTree {
 	public DefaultMutableTreeNode getRoot() {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.getModel().getRoot();
 		return root;
+	}
+
+	public void setSelectedFiles(ArrayList<File> selectedFiles) {
+		this.treePDFFiles = selectedFiles;
+	}
+
+	public ArrayList<File> getSelectedFiles() {
+		return treePDFFiles;
 	}
 
 }

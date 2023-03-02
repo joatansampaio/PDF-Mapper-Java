@@ -1,6 +1,7 @@
 package com.joatan.pdfmapper.handlers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,10 @@ public class PDFHandler {
 	public void loadPDF(String path) {
 		try {
 			pdf = PDDocument.load(new File(path));
-		} catch (Exception e) {
+		}catch(IOException ioException) {
+			System.out.println("I/O Exception.");
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -24,6 +28,10 @@ public class PDFHandler {
 	public HashMap<String, String> getFormFieldsAndValues() throws Exception {
 		PDDocumentCatalog catalog = pdf.getDocumentCatalog();
 		PDAcroForm form = catalog.getAcroForm();
+		if (form == null) {
+			System.out.println("No form");
+			return null;
+		}
 		List<PDField> fields = form.getFields();
 
 		HashMap<String, String> formFields = new HashMap<String, String>();

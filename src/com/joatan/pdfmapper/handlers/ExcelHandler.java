@@ -3,6 +3,7 @@ package com.joatan.pdfmapper.handlers;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -85,12 +86,26 @@ public class ExcelHandler {
 
 	}
 
-	public void addStudent(String src, int rowNumber) throws Exception {
+	public void addStudent(String src, int rowNumber) {
 
 		PDFHandler pdf = new PDFHandler();
 		Student student = new Student();
 		pdf.loadPDF(src);
-		student.initFromFields(pdf.getFormFieldsAndValues());
+		if(pdf.pdf == null) {
+			System.out.println("PDF null");
+			return;
+		}
+		HashMap<String, String> formValues;
+		try {
+			formValues = pdf.getFormFieldsAndValues();
+			if (formValues == null) {
+				pdf.pdf.close();
+				return;
+			}
+			student.initFromFields(formValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		row = sheet.createRow(rowNumber);
 
@@ -166,7 +181,11 @@ public class ExcelHandler {
 
 		write();
 
-		pdf.pdf.close();
+		try {
+			pdf.pdf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void write() {

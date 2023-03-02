@@ -4,9 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -19,8 +18,10 @@ public class PDFFileTree extends JTree {
 
 	JTree sourceTree;
 	String folderSrc = "";
+	ArrayList<File> treePDFFiles;
 
 	public PDFFileTree() {
+		treePDFFiles = new ArrayList<>();
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(400, 700));
 
@@ -31,33 +32,7 @@ public class PDFFileTree extends JTree {
 
 		// Initial model for standard folder.
 		sourceTree.setModel(null);
-
-		// Listener for double click
-		sourceTree.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					JTree source = (JTree) e.getSource();
-					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) source
-							.getLastSelectedPathComponent();
-					if (selectedNode != null && selectedNode.isLeaf()) {
-						JTree dTree = MainPanel.getDestinationTree();
-						DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(selectedNode.getUserObject());
-						DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dTree.getLastSelectedPathComponent();
-
-						DefaultMutableTreeNode root = (DefaultMutableTreeNode) dTree.getModel().getRoot();
-						boolean exists = nodeExists(selectedNode, root);
-						if (!exists) {
-							if (parent == null) {
-								parent = (DefaultMutableTreeNode) dTree.getModel().getRoot();
-							}
-							parent.add(newNode);
-							((DefaultTreeModel) dTree.getModel()).reload(parent);
-						}
-					}
-				}
-			}
-		});
-
+		
 		sourceTree.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -87,8 +62,10 @@ public class PDFFileTree extends JTree {
 
 						if (periodIndex > 0) {
 							fileExtension = fileName.substring(periodIndex + 1);
-							if (fileExtension.equals("pdf"))
+							if (fileExtension.equals("pdf")) {
+								treePDFFiles.add(file);
 								root.add(childNode);
+							}
 						}
 					}
 
@@ -125,5 +102,21 @@ public class PDFFileTree extends JTree {
 		}
 		return false;
 	}
-
+	
+	public void resetTreeArray() {
+		treePDFFiles.clear();
+	}
+	
+	public void setTreeFiles(ArrayList<File> selectedFiles) {
+		this.treePDFFiles = selectedFiles;
+	}
+	
+	public ArrayList<File> getTreeFiles() {
+		return treePDFFiles;
+	}
+	
+	public void printTreeArray() {
+		for(File file : treePDFFiles)
+			System.out.println(file.getAbsolutePath());
+	}
 }

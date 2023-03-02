@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 import com.joatan.pdfmapper.handlers.ExcelHandler;
 
@@ -31,8 +30,9 @@ public class MainPanel extends JPanel {
 		JLabel label = new JLabel("Double Click to add or remove files");
 		JButton browseBtn = new JButton("Browse Files");
 		JButton executeBtn = new JButton("Execute Script");
-		JButton addBtn = new JButton("Add to List >>");
-		JButton removeAllBtn = new JButton(" << Remove All");
+		JButton addBtn = new JButton("Add to List | >>");
+		JButton removeAllBtn = new JButton(" << | Remove All");
+		JButton removeBtn = new JButton(" << | Remove from list");
 		JPanel btnPanel = new JPanel();
 
 		// Button panel config
@@ -40,6 +40,7 @@ public class MainPanel extends JPanel {
 		btnPanel.add(label);
 		btnPanel.add(Box.createHorizontalStrut(10));
 		btnPanel.add(addBtn);
+		btnPanel.add(removeBtn);
 		btnPanel.add(removeAllBtn);
 		btnPanel.add(browseBtn);
 		btnPanel.add(executeBtn);
@@ -57,51 +58,10 @@ public class MainPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				FolderChooser folderChooser = new FolderChooser();
 				sourceTree.populateTree(new File(folderChooser.selectFolder()));
+				sourceTree.printTreeArray();
 			}
 		});
 
-		executeBtn.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-
-				ArrayList<String> srcPaths = new ArrayList<String>();
-
-				ExcelHandler excel = new ExcelHandler();
-
-				excel.createWorkbook();
-				int numberOfFiles = destinationTree.getRoot().getChildCount();
-				if (numberOfFiles != 0) {
-					for (int index = 0; index < numberOfFiles; index++) {
-						DefaultMutableTreeNode child = (DefaultMutableTreeNode) destinationTree.getRoot()
-								.getChildAt(index);
-						TreeNode[] path = child.getPath();
-
-						for (TreeNode t : path) {
-							if (t != null && !t.toString().equals(""))
-								srcPaths.add(t.toString());
-						}
-					}
-				}
-
-				int rowNumber = 1;
-				for (String s : srcPaths) {
-					try {
-						excel.addStudent(s, rowNumber);
-						rowNumber++;
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-//				try {
-//					excel.addStudent("student1.pdf", 1);
-//					excel.addStudent("student2.pdf", 2);
-//					excel.addStudent("student3.pdf", 3);
-//				} catch (Exception e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-
-			}
-		});
 		addBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				sourceTree.addSelectedNodesToDestinationTree();
@@ -114,6 +74,38 @@ public class MainPanel extends JPanel {
 			}
 		});
 
+		executeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+
+				ArrayList<String> srcPaths = new ArrayList<String>();
+				ExcelHandler excel = new ExcelHandler();
+				excel.createWorkbook();
+				
+				int numberOfFiles = destinationTree.getRoot().getChildCount();
+				if (numberOfFiles != 0) {
+					for (int index = 0; index < numberOfFiles; index++) {
+						DefaultMutableTreeNode child = (DefaultMutableTreeNode) destinationTree.getRoot()
+								.getChildAt(index);
+						String filePath = child.getUserObject().toString();
+						File file = new File(filePath);
+						String absolutePath = file.getAbsolutePath();
+						System.out.println(absolutePath);
+						srcPaths.add(absolutePath);
+					}
+				}
+
+				int rowNumber = 1;
+				for (String s : srcPaths) {
+					try {
+						excel.addStudent(s, rowNumber);
+						rowNumber++;
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		
 		// Adding tree, browse button and the panel
 		add(sourceTree);
 		add(btnPanel);
