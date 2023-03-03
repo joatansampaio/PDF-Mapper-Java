@@ -20,6 +20,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.joatan.pdfmapper.entity.Student;
 
+/**
+ * @author Joatan Sampaio
+ * @date 12/01/2022
+ *
+ */
 public class ExcelHandler {
 
 	private static String HEADER[] = { "Name", "Star ID", "Student ID", "Phone", "Email", "Country", "Arrival",
@@ -91,7 +96,7 @@ public class ExcelHandler {
 		PDFHandler pdf = new PDFHandler();
 		Student student = new Student();
 		pdf.loadPDF(src);
-		if(pdf.pdf == null) {
+		if (pdf.pdf == null) {
 			System.out.println("PDF null");
 			return;
 		}

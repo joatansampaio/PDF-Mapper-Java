@@ -1,7 +1,13 @@
-package com.joatan.pdfmapper.ui;
+package com.joatan.pdfmapper.components;
 
 import java.io.File;
 
+
+/**
+ * @author Joatan Sampaio
+ * @date 12/01/2022
+ *
+ */
 public class FileNode {
 
 	private File file;

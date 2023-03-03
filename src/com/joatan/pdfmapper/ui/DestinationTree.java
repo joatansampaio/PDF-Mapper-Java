@@ -1,27 +1,25 @@
 package com.joatan.pdfmapper.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
+/**
+ * @author Joatan Sampaio
+ * @date 12/01/2022
+ *
+ */
 @SuppressWarnings("serial")
-public class DestinationPDFFileTree extends JTree {
+public class DestinationTree extends JTree {
 
-	ArrayList<File> treePDFFiles;
-
-	public DestinationPDFFileTree() {
+	public DestinationTree() {
 		this.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Selected PDFs")));
 
-		this.setPreferredSize(new Dimension(300, 700));
-		this.setBackground(Color.WHITE);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		addMouseListener(new MouseAdapter() {
@@ -51,17 +49,24 @@ public class DestinationPDFFileTree extends JTree {
 		((DefaultTreeModel) this.getModel()).reload();
 	}
 
+	public void removeSelectedNodes() {
+	    TreePath[] selectedPaths = getSelectionPaths();
+	    if (selectedPaths != null) {
+	        for (TreePath selectedPath : selectedPaths) {
+	            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+	            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+	            if (parentNode != null) {
+	                parentNode.remove(selectedNode);
+	            }
+	        }
+	        ((DefaultTreeModel) getModel()).reload();
+	    }
+	}
+	
 	public DefaultMutableTreeNode getRoot() {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.getModel().getRoot();
 		return root;
 	}
 
-	public void setSelectedFiles(ArrayList<File> selectedFiles) {
-		this.treePDFFiles = selectedFiles;
-	}
-
-	public ArrayList<File> getSelectedFiles() {
-		return treePDFFiles;
-	}
 
 }

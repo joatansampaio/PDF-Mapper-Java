@@ -10,6 +10,11 @@ import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
+/**
+ * @author Joatan Sampaio
+ * @date 12/01/2022
+ *
+ */
 public class PDFHandler {
 
 	PDDocument pdf;

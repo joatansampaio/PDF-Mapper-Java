@@ -1,64 +1,83 @@
 package com.joatan.pdfmapper.ui;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.joatan.pdfmapper.components.Button;
+import com.joatan.pdfmapper.components.FolderChooser;
 import com.joatan.pdfmapper.handlers.ExcelHandler;
 
+/**
+ * @author Joatan Sampaio
+ * @date 12/01/2022
+ *
+ */
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
 
-	private static PDFFileTree sourceTree;
-	private static DestinationPDFFileTree destinationTree;
+	private SourceTree sourceTree;
+	private DestinationTree destinationTree;
 
 	public MainPanel() {
 
-		// Variables
-		sourceTree = new PDFFileTree();
-		destinationTree = new DestinationPDFFileTree();
+		sourceTree = new SourceTree();
+		destinationTree = new DestinationTree();
+		
+		JScrollPane sourceTreePanel = new JScrollPane();
+		JScrollPane destinationTreePanel = new JScrollPane();
+		
+		sourceTreePanel.setPreferredSize(new Dimension(300,700));
+		destinationTreePanel.setPreferredSize(new Dimension(300,700));
 
-		JLabel label = new JLabel("Double Click to add or remove files");
-		JButton browseBtn = new JButton("Browse Files");
-		JButton executeBtn = new JButton("Execute Script");
-		JButton addBtn = new JButton("Add to List | >>");
-		JButton removeAllBtn = new JButton(" << | Remove All");
-		JButton removeBtn = new JButton(" << | Remove from list");
+		JLabel label = new JLabel("Select PDFs to Add/Remove");
+		JButton browseBtn = new Button("Browse Files");
+		JButton executeBtn = new Button("Create Spreadsheet");
+		JButton addBtn = new Button("Add to List | >>");
+		JButton removeAllBtn = new Button(" << | Remove All");
+		JButton removeBtn = new Button(" << | Remove from list");
 		JPanel btnPanel = new JPanel();
+		JPanel centerPanel = new JPanel(new GridBagLayout());
 
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		// Button panel config
-		btnPanel.setLayout(new GridLayout(0, 1));
-		btnPanel.add(label);
+		btnPanel.setLayout(new GridLayout(0, 1, 10, 10));
+		btnPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		btnPanel.add(browseBtn);
 		btnPanel.add(Box.createHorizontalStrut(10));
+		btnPanel.add(label);
 		btnPanel.add(addBtn);
 		btnPanel.add(removeBtn);
 		btnPanel.add(removeAllBtn);
-		btnPanel.add(browseBtn);
 		btnPanel.add(executeBtn);
-		btnPanel.add(Box.createHorizontalStrut(10));
 
-		Dimension buttonSize = new Dimension(200, 50);
-
-		addBtn.setPreferredSize(buttonSize);
-		removeAllBtn.setPreferredSize(buttonSize);
-		executeBtn.setPreferredSize(buttonSize);
-		browseBtn.setPreferredSize(buttonSize);
-
+		GridBagConstraints centerPanelConfig = new GridBagConstraints();
+		centerPanelConfig.gridx = 0;
+		centerPanelConfig.gridy = 0;
+		centerPanelConfig.fill = GridBagConstraints.CENTER;
+		
+		centerPanel.add(btnPanel, centerPanelConfig);
+		
 		// Listeners
 		browseBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				FolderChooser folderChooser = new FolderChooser();
 				sourceTree.populateTree(new File(folderChooser.selectFolder()));
-				sourceTree.printTreeArray();
 			}
 		});
 
@@ -68,6 +87,12 @@ public class MainPanel extends JPanel {
 			}
 		});
 
+		removeBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				destinationTree.removeSelectedNodes();
+			}
+		});
+		
 		removeAllBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				destinationTree.removeAllNodes();
@@ -107,16 +132,19 @@ public class MainPanel extends JPanel {
 		});
 		
 		// Adding tree, browse button and the panel
-		add(sourceTree);
-		add(btnPanel);
-		add(destinationTree);
+		sourceTreePanel.getViewport().add(sourceTree);
+		destinationTreePanel.getViewport().add(destinationTree);
+		
+		add(sourceTreePanel);
+		add(centerPanel);
+		add(destinationTreePanel);
 	}
 
-	public static PDFFileTree getSourceTree() {
+	public SourceTree getSourceTree() {
 		return sourceTree;
 	}
 
-	public static DestinationPDFFileTree getDestinationTree() {
+	public DestinationTree getDestinationTree() {
 		return destinationTree;
 	}
 
